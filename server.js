@@ -113,11 +113,11 @@ app.get("/", (req, res) => {
     status: "ok",
     message: "Backend is connected",
     endpoints: {
-      health: "/api/health",
-      videos: "/api/videos",
+      health: "/health",
+      videos: "/videos",
       login: "POST /api/auth/login",
       register: "POST /api/auth/register",
-      dashboard: "/api/dashboard"
+      dashboard: "/dashboard"
     }
   });
 });
@@ -214,7 +214,7 @@ app.post("/api/auth/logout", authRequired, (req, res) => {
 
 // ---- Videos ----
 
-app.get("/api/videos", (req, res) => {
+app.get("/videos", (req, res) => {
   const origin = `${req.protocol}://${req.get("host")}`;
   const videos = db.videos.slice().reverse().map(v => ({
     ...v,
@@ -223,7 +223,7 @@ app.get("/api/videos", (req, res) => {
   res.json(videos);
 });
 
-app.post("/api/videos/upload", upload.single("video"), (req, res) => {
+app.post("/videos/upload", upload.single("video"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "Video file is required" });
   }
@@ -254,7 +254,7 @@ app.post("/api/videos/upload", upload.single("video"), (req, res) => {
   });
 });
 
-app.post("/api/videos/:id/view", (req, res) => {
+app.post("/videos/:id/view", (req, res) => {
   const video = db.videos.find(v => v.id === req.params.id);
 
   if (!video) {
