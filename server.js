@@ -105,10 +105,16 @@ app.post("/api/videos/upload", upload.single("video"), (req, res) => {
     earnings: 0,
     createdAt: new Date().toISOString()
   };
+db.videos.push(video);
 
-  db.videos.push(video);
-  save();
-  res.status(201).json(video);
+// Make the video URL HTTPS
+if (video.videoUrl) {
+  video.videoUrl = video.videoUrl.replace(/^http:\/\//i, "https://");
+}
+
+save();
+
+res.status(201).json(video);
 });
 
 app.post("/api/videos/:id/view", (req, res) => {
