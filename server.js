@@ -105,11 +105,8 @@ app.post("/api/videos/upload", upload.single("video"), (req, res) => {
     earnings: 0,
     createdAt: new Date().toISOString()
   };
-db.videos.push(video);
-
-// Make the video URL HTTPS
-if (video.videoUrl) {
-  video.videoUrl = video.videoUrl.replace(/^http:\/\//i, "https://");
+if (video.videoUrl && video.videoUrl.startsWith("/")) {
+  video.videoUrl = `https://${req.get("host")}${video.videoUrl}`;
 }
 
 save();
