@@ -106,8 +106,10 @@ app.post("/api/videos/upload", upload.single("video"), (req, res) => {
     createdAt: new Date().toISOString()
   };
   db.videos.push(video);
+  save();
 if (video.videoUrl && video.videoUrl.startsWith("/")) {
-  video.videoUrl = `https://${req.get("host")}${video.videoUrl}`;
+    video.videoUrl =
+        `${req.protocol}://${req.get("host")}${video.videoUrl}`;
 }
 
 save();
