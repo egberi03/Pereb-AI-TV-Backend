@@ -107,14 +107,7 @@ app.post("/api/videos/upload", upload.single("video"), (req, res) => {
   };
   db.videos.push(video);
   save();
-if (video.videoUrl && video.videoUrl.startsWith("/")) {
-    video.videoUrl =
-        `${req.protocol}://${req.get("host")}${video.videoUrl}`;
-}
-
-save();
-
-res.status(201).json(video);
+  res.status(201).json(video);
 });
 
 app.post("/api/videos/:id/view", (req, res) => {
